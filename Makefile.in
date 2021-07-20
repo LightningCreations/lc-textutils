@@ -29,6 +29,8 @@ install: $(foreach subdir,$(SUBDIRS),$(subdir)/install)
 
 install-strip: $(foreach subdir,$(SUBDIRS),$(subdir)/install-strip)
 
+check: $(foreach subdir,$(SUBDIRS),$(subdir)/check)
+
 %/stamp: %/Makefile
 	+$(MAKE) -C $* stamp
 
