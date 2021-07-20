@@ -108,12 +108,11 @@ Makefile: ../config.status @srcdir@/Makefile.in
 stamp: $(binaries) $(OUTPUT)
 	touch stamp
 
-$(OUTPUT): Makefile
-
+$(OUTPUT)
 
 include $(OUTPUT).d
 
-$(OUTPUT): $(srcdir)/src/main.rs $(foreach subdir,$(SUBDIRS),$(subdir)/stamp)
+$(OUTPUT).d: $(srcdir)/src/main.rs $(foreach subdir,$(SUBDIRS),$(subdir)/stamp)
 	$(RUSTC) $(RUSTFLAGS) $(EXTRA_RUSTFLAGS) $(foreach cfg,$(CFG),--cfg $(cfg)) --crate-name $(CRATE_NAME) --crate-type bin --emit dep-info=@builddir@/$(OUTPUT).d -o$(OUTPUT) $< $(EXTERN_CRATES)
 
 $(OUTPUT): $(srcdir)/src/main.rs $(foreach subdir,$(SUBDIRS),$(subdir)/stamp)
