@@ -1,0 +1,16 @@
+AC_INIT
+
+AC_CONFIG_MACRO_DIRS([m4/])
+
+AC_CANONICAL_HOST
+
+AC_PROG_CC
+AC_PROG_INSTALL
+AC_PROG_LN_S
+
+LCRUST_PROG_RUSTC
+LCRUST_RUSTC_VERSION
+
+AC_CONFIG_FILES([awk/Makefile grep/Makefile posix-regex/Makefile sed/Makefile Makefile])
+
+AC_OUTPUT

@@ -1,0 +1,45 @@
+
+SUBDIRS = posix-regex awk grep sed
+
+export MAKE
+
+all: 
+	+@srcdir@/build-dirs.sh $(SUBDIRS)
+	+$(MAKE) stamp
+
+.PHONY: all clean distclean install install-strip $(binary_outputs:%=install-%) $(binary_outputs:%=install-strip-%) $(foreach subdir,$(SUBDIRS),$(subdir)/install) $(foreach subdir,$(SUBDIRS),$(subdir)/install-strip) $(foreach subdir,$(SUBDIRS),$(subdir)/clean) $(foreach subdir,$(SUBDIRS),$(subdir)/distclean) $(foreach subdir,$(SUBDIRS),$(subdir)/check)
+
+Makefile: config.status @srcdir@/Makefile.in
+	@builddir@/config.status Makefile
+
+
+config.status: @srcdir@/configure
+	@builddir@/config.status --recheck
+
+
+stamp: Makefile
+	touch stamp
+
+clean: $(foreach subdir,$(SUBDIRS),$(subdir)/clean)
+
+distclean: clean $(foreach subdir,$(SUBDIRS),$(subdir)/distclean)
+	rm -f config.status config.log Makefile
+
+install: $(foreach subdir,$(SUBDIRS),$(subdir)/install)
+
+install-strip: $(foreach subdir,$(SUBDIRS),$(subdir)/install-strip)
+
+%/stamp: %/Makefile
+	+$(MAKE) -C $* stamp
+
+%/clean:
+	+$(MAKE) -C $* clean
+
+%/install:
+	+$(MAKE) -C $* install
+
+%/install-strip:
+	+$(MAKE) -C $* install-strip
+
+%/check:
+	+$(MAKE) -C $* check

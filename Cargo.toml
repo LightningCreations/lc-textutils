@@ -1,0 +1,2 @@
+[workspace]
+members = ["posix-regex","grep","sed","awk"]
