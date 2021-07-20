@@ -109,6 +109,7 @@ Makefile: ../config.status @srcdir@/Makefile.in
 stamp: $(binaries) $(OUTPUT)
 	touch stamp
 
+
 $(OUTPUT): Makefile
 
 
