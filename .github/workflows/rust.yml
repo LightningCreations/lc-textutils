@@ -1,0 +1,32 @@
+name: Rust
+
+on:
+  push: 
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  rust:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+        rust-channel: [stable, beta,nightly]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Rustup Toolchain
+        run: |
+          rustup toolchain add --profile minimal ${{ matrix.rust-channel }}
+          rustup default ${{ matrix.rust-channel }}
+          rustup update
+      - name: Build
+        run: |
+           cargo build
+           cargo test
+  rustfmt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: cargo fmt -- --check  
